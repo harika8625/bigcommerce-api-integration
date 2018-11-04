@@ -2,7 +2,7 @@
 
 @if(isset($customer['customerData']) && !empty($customer['customerData']))
 
-    @section('title', $customer['customerData']['first_name'] ?? '' . " Order History")
+    @section('title', $customer['customerData']['first_name'] . "'s Order History")
 
     @section('content')
         <table>
