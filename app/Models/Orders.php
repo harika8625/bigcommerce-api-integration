@@ -8,10 +8,16 @@
 
 namespace App\Models;
 
-use Bigcommerce\Api\Client;
+use Bigcommerce\Api\Client as BigcommerceAPI;
 
 class Orders
 {
+    public $apiObj;
+
+    function __construct(BigcommerceAPI $apiObj) {
+        $this->apiObj = $apiObj;
+    }
+
     /**
      * Get all customer orders
      *
@@ -26,7 +32,7 @@ class Orders
         $pageCounter = 1;
         do {
             $filter = array('customer_id' => $customerId, 'is_deleted' => 'false', 'limit' => $itemsPerPage, 'page' => $pageCounter, 'sort' => 'date_created:desc');
-            $customerOrders = Client::getOrders($filter);
+            $customerOrders = $this->apiObj->getOrders($filter);
 
             if (!empty($customerOrders)) {
                 $recordsCount = count($customerOrders);

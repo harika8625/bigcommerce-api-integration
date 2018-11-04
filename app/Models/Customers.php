@@ -8,11 +8,17 @@
 
 namespace App\Models;
 
-use Bigcommerce\Api\Client;
+use Bigcommerce\Api\Client as BigcommerceAPI;
 
 
 class Customers
 {
+    public $apiObj;
+
+    function __construct(BigcommerceAPI $apiObj) {
+        $this->apiObj = $apiObj;
+    }
+
     /**
      * Get total number of customers in the store using customers count API
      *
@@ -20,7 +26,7 @@ class Customers
      */
     public function getCustomersCount()
     {
-        return Client::getCustomersCount();
+        return $this->apiObj->getCustomersCount();
     }
 
     /**
@@ -32,7 +38,7 @@ class Customers
     public function getCustomer($customerId)
     {
         $customerData = array();
-        $customerDetails = Client::getCustomer($customerId);
+        $customerDetails = $this->apiObj->getCustomer($customerId);
         if (!empty($customerDetails)) {
             $customerData = $customerDetails;
         }
@@ -52,7 +58,7 @@ class Customers
 
         //Get specified number of customers from "List Customers API" by passing filter parameters
         $filter = array('page' => $pageNum, 'limit' => $itemsPerPage);
-        $customersData = Client::getCustomers($filter);
+        $customersData = $this->apiObj->getCustomers($filter);
         if (!empty($customersData)) {
             $customersList = $customersData;
         }
